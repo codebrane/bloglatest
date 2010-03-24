@@ -1,0 +1,37 @@
+BlogLatest
+==========
+
+o Introduction
+o Installation
+o Usage
+o Configuration
+o More information
+
+Introduction
+------------
+The BlogLatest widget lets you display the latest blog posts from all users
+or from certain users you choose. You can put the widget on your dashboard
+or profile. Simply edit the dashboard or profile page and drag the
+"Latest Blog Posts" to where you desire on the page.
+
+Installation
+------------
+Download the zip file and extract to your Elgg mod directory. Rename to bloglatest and
+enable the plugin in your Elgg's Tool Administration area.
+
+Usage
+-----
+You can put the widget on your dashboard or profile.
+Simply edit the dashboard or profile page and drag the "Latest Blog Entries"
+to where you desire on the page.
+
+Configuration
+-------------
+If you click on the Edit link in the widget you can specify the user to follow, the number
+of posts to display, 10 being the default, the tags to use for filtering the latest blogs
+and also the length of the extract to display. This has a default of 140 characters, ala Twitter.
+
+More information
+----------------
+http://codebrane.com/blog/
+http://github.com/codebrane/bloglatest
