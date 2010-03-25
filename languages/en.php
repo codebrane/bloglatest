@@ -11,12 +11,16 @@
 
 $english = array(
 	// River
-	"item:object:bloglatest" => "Latest blog posts",
+	"item:object:bloglatest" => "Latest Posts",
 	
 	// Widget name
-	"bloglatest:start:widget:name" => "Latest Blog Posts",
+	"bloglatest:start:widget:name" => "Latest Posts",
 	
 	// bloglatest edit view
+	"bloglatest:view:edit:posttype:text" => "Post type",
+	"bloglatest:view:edit:posttype:all:text" => "Blog and Wire posts",
+	"bloglatest:view:edit:posttype:blog:text" => "Blog posts",
+	"bloglatest:view:edit:posttype:wire:text" => "Wire posts",
 	"bloglatest:view:edit:username:text" => "Username",
 	"bloglatest:view:edit:tags:text" => "Tags",
 	"bloglatest:view:edit:noofposts:text" => "No. of posts",
