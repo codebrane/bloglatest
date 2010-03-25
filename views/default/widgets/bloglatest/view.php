@@ -34,7 +34,7 @@ foreach ($posts as $username_and_icon => $post) {
 		echo "</div>";
 		echo "<a href=\"{$CONFIG->wwwroot}pg/profile/{$user_parts[1]}\">{$user_parts[0]}</a><br />";
 	}
-	echo "<a href=\"{$CONFIG->wwwroot}/pg/blog/admin/read/{$post->guid}\">{$post->title}</a><br />{$description} ...";
+	echo "<a href=\"{$CONFIG->wwwroot}/pg/blog/admin/read/{$post->guid}\">{$post->title}</a><br />{$description}";
 	?>
 	</div>
 	<? } ?>
@@ -70,7 +70,7 @@ foreach ($posts as $username_and_icon => $post) {
 
 				<?php
 			    echo "<b>{$user_parts[0]}: </b><br />";
-			    $desc = $post->description;
+					$desc = get_excerpt($post->description, $vars['entity']->excerpt_length);
 			    $desc = preg_replace('/\@([A-Za-z0-9\_\.\-]*)/i','@<a href="' . $vars['url'] . 'pg/thewire/$1">$1</a>',$desc);
 					echo parse_urls($desc);
 				?>
