@@ -163,10 +163,12 @@ function get_widget_top_text($username, $userid, $entity_owner) {
 /**
  * Extracts an excerpt from the post
  * @param post The post
- * @param excerpt The length of the excerpt. Defaults to MAX_EXCERPT_LENGTH if not specified
+ * @param excerpt_length The length of the excerpt. Defaults to MAX_EXCERPT_LENGTH if not specified
  * @return Excerpt from the post
  */
-function get_excerpt($post, $excerpt = MAX_EXCERPT_LENGTH) {
-	return substr($post, 0, $excerpt);
+function get_excerpt($post, $excerpt_length = MAX_EXCERPT_LENGTH) {
+	$excerpt = substr($post, 0, $excerpt_length);
+	if ($excerpt_length < MAX_EXCERPT_LENGTH) $excerpt .= " ...";
+	return $excerpt;
 }
 ?>
