@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * Latest blog entries
  * 
