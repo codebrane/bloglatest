@@ -13,7 +13,7 @@
 require_once($CONFIG->pluginspath . "bloglatest/util/utils.php");
 ?>
 <p>
-<?
+<?php
 /*
  * Post type. Blog, Wire, etc...
  */
@@ -27,7 +27,7 @@ echo elgg_echo('bloglatest:view:edit:posttype:text').":";
 </p>
 
 <p>
-<?
+<?php
 /*
  * Filter on username
  */
@@ -38,7 +38,7 @@ echo elgg_view('input/text', array('internalname' => 'params[username]',
 </p>
 
 <p>
-<?
+<?php
 /*
  * Filter on tags
  */
@@ -49,7 +49,7 @@ echo elgg_view('input/text', array('internalname' => 'params[tags]',
 </p>
 
 <p>
-<?
+<?php
 /*
  * Number of posts to show
  */
@@ -62,7 +62,7 @@ echo elgg_view('input/text', array('internalname' => 'params[no_of_posts]',
 </p>
 
 <p>
-<?
+<?php
 /*
  * Length of the excerpt of each post to display
  */
