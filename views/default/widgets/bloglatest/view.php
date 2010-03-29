@@ -18,16 +18,17 @@
 	<? echo get_widget_top_text($vars['entity']->username, $vars['entity']->getOwnerEntity()); ?>
 </div>
 
-<?
+<?php
 $posts = get_posts($vars['entity']->username, $vars['entity']->tags, $vars['entity']->no_of_posts, $vars['entity']->posttype);
+
 foreach ($posts as $username_and_icon => $post) {
 	$user_parts = explode(",", $username_and_icon);
 	$description = get_excerpt($post->description, $vars['entity']->excerpt_length);
 	?>
 	
-	<? if ($post->subtype == SUBTYPE_BLOG) { ?>
+	<?php if ($post->post_type == POST_TYPE_BLOG) { ?>
 	<div class="contentWrapper">
-	<?
+	<?php
 	if ($vars['entity']->username == "") {
 		echo "<div class=\"thewire_icon\">";
 		echo elgg_view("profile/icon", array('entity' => $vars['entity']->getOwnerEntity(), 'size' => 'small'));
@@ -37,15 +38,15 @@ foreach ($posts as $username_and_icon => $post) {
 	echo "<a href=\"{$CONFIG->wwwroot}/pg/blog/admin/read/{$post->guid}\">{$post->title}</a><br />{$description}";
 	?>
 	</div>
-	<? } ?>
+	<?php } ?>
 	
-	<?
+	<?php
 		/* The wire view code was taken from mod/thewire/views/default/object/thewire.php
 		 * and modified to display the correct objects.
 		 */
 	?>
 	
-	<? if ($post->subtype == SUBTYPE_WIRE) { ?>
+	<?php if ($post->post_type == POST_TYPE_WIRE) { ?>
 		<div class="thewire-singlepage">
 			<div class="thewire-post">
 
@@ -94,10 +95,10 @@ foreach ($posts as $username_and_icon => $post) {
 
 			</div>
 		</div>
-	<? } ?>
+	<?php } ?>
 	
 	
-	<?
+	<?php
 }
 ?>
 
