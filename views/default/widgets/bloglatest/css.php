@@ -12,7 +12,7 @@
 
 ?>
 
-<?
+<?php
 	/* The CSS was taken from mod/thewire/views/default/thewire/css.php */
 ?>
 
