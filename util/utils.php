@@ -14,8 +14,6 @@ define(MAX_LATEST_LIMIT, '10');
 define(MAX_EXCERPT_LENGTH, '140');
 
 // No need to edit anything after this
-define(SUBTYPE_BLOG, 4);
-define(SUBTYPE_WIRE, 6);
 define(POST_TYPE_ALL, "POST_TYPE_ALL");
 define(POST_TYPE_BLOG, "POST_TYPE_BLOG");
 define(POST_TYPE_WIRE, "POST_TYPE_WIRE");
@@ -30,7 +28,11 @@ define(POST_TYPE_WIRE, "POST_TYPE_WIRE");
  *         USER_FULL_NAME,USER_LOGIN_ID,SMALL_ICON_URL,COUNT => post object
  *         the COUNT value can be ignored
  */
-function get_posts($username, $tags, $no_of_posts = MAX_LATEST_LIMIT, $post_type) {
+function get_posts($username, $tags, $no_of_posts = MAX_LATEST_LIMIT, $post_type = POST_TYPE_ALL) {
+	if ($post_type == "") {
+		$post_type = POST_TYPE_ALL;
+	}
+	
 	if ($post_type == POST_TYPE_ALL) {
 		$posts = array_merge(get_objects(POST_TYPE_BLOG), get_objects(POST_TYPE_WIRE));
 	}
@@ -78,6 +80,9 @@ function filter_posts($posts, $username, $tags) {
 		if (stristr($tags, ",") === FALSE) $tags .= ",";
 	}
 	
+	$subtype_blog = get_subtype(POST_TYPE_BLOG);
+	$subtype_wire = get_subtype(POST_TYPE_WIRE);
+	
 	foreach ($posts as $post) {
 		$the_blog = new ElggObject($post->guid);
 		$user = get_post_owner($the_blog->owner_guid);
@@ -92,7 +97,8 @@ function filter_posts($posts, $username, $tags) {
 		}
 		
 		// Filter on tags. Unless it's a wire post as it has no tags
-		if ($post->subtype != SUBTYPE_WIRE) {
+		if ($post->subtype == $subtype_blog) {
+			$the_blog->post_type = POST_TYPE_BLOG;
 			if (($ok_to_add) && ($tags != "")) {
 				$ok_to_add = false;
 				$tags_parts = explode(",", $tags);
@@ -113,6 +119,9 @@ function filter_posts($posts, $username, $tags) {
 					}
 				}
 			}
+		}
+		else if ($post->subtype == $subtype_wire) {
+			$the_blog->post_type = POST_TYPE_WIRE;
 		}
 		
 		if ($ok_to_add) {
@@ -170,5 +179,24 @@ function get_excerpt($post, $excerpt_length = MAX_EXCERPT_LENGTH) {
 	$excerpt = substr($post, 0, $excerpt_length);
 	if ($excerpt_length < MAX_EXCERPT_LENGTH) $excerpt .= " ...";
 	return $excerpt;
+}
+
+/**
+ * Gets the numeric subtype from the database for a particular entity
+ * @param post_type POST_TYPE_BLOG or POST_TYPE_WIRE
+ * @return the numeric subtype of the entity as defined in the database
+ */
+function get_subtype($post_type) {
+	global $CONFIG;
+	
+	if ($post_type == POST_TYPE_BLOG) {
+		$result = get_data_row("SELECT * from {$CONFIG->dbprefix}entity_subtypes where subtype='blog'");
+	}
+	
+	if ($post_type == POST_TYPE_WIRE) {
+		$result = get_data_row("SELECT * from {$CONFIG->dbprefix}entity_subtypes where subtype='thewire'");
+	}
+	
+	return $result->id;
 }
 ?>
