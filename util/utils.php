@@ -34,7 +34,22 @@ function get_posts($username, $tags, $no_of_posts = MAX_LATEST_LIMIT, $post_type
 	}
 	
 	if ($post_type == POST_TYPE_ALL) {
-		$posts = array_merge(get_objects(POST_TYPE_BLOG), get_objects(POST_TYPE_WIRE));
+		$blogs = get_objects(POST_TYPE_BLOG);
+		$wires = get_objects(POST_TYPE_WIRE);
+
+		$noBlogs = false;
+		if ((count($blogs) == 1) && ($blogs[0]->description == "")) $noBlogs = true;
+		
+		$noWires = false;
+		if ((count($wires) == 1) && ($wires[0]->description == "")) $noWires = true;
+		
+		if ($noWires || $noBlogs) {
+			if ($noWires) $posts = $blogs;
+			else if ($noBlogs) $posts = $wires;
+		}
+		else {
+			$posts = array_merge($blogs, $wires);
+		}
 	}
 	if ($post_type == POST_TYPE_BLOG) {
 		$posts = get_objects(POST_TYPE_BLOG);
@@ -149,17 +164,15 @@ function get_post_owner($blog_guid) {
  * will include that user's icon. Otherwise it will just be text
  * and each user's icon will appear next to their post in the list.
  * @param username The full name of the user or empty if the widget is for all users
- * @param userid The login ID of the user or empty if the widget is for all users
- * @param entity_owner The object representing the filtered user
  * @return Displaying text for the top bar of the widget
  */
-function get_widget_top_text($username, $userid, $entity_owner) {
+function get_widget_top_text($username) {
 	global $CONFIG;
 	if ($username != "") {
 		$user = get_user_by_username($username);
 		
 		$topline =  "<div class=\"thewire_icon\">";
-		$topline .= elgg_view("profile/icon", array('entity' => $entity_owner, 'size' => 'small'));
+		$topline .= elgg_view("profile/icon", array('entity' => $user, 'size' => 'small'));
 		$topline .= "</div>";
 		$topline .= "<p><a href=\"{$CONFIG->wwwroot}pg/profile/{$user->username}\">{$user->name}</a></p>";
 		
