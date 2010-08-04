@@ -15,7 +15,7 @@
 ?>
 
 <div class="contentWrapper">
-	<? echo get_widget_top_text($vars['entity']->username, $vars['entity']->getOwnerEntity()); ?>
+	<? echo get_widget_top_text($vars['entity']->username); ?>
 </div>
 
 <?php
@@ -29,12 +29,10 @@ foreach ($posts as $username_and_icon => $post) {
 	<?php if ($post->post_type == POST_TYPE_BLOG) { ?>
 	<div class="contentWrapper">
 	<?php
-	if ($vars['entity']->username == "") {
-		echo "<div class=\"thewire_icon\">";
-		echo elgg_view("profile/icon", array('entity' => $vars['entity']->getOwnerEntity(), 'size' => 'small'));
-		echo "</div>";
-		echo "<a href=\"{$CONFIG->wwwroot}pg/profile/{$user_parts[1]}\">{$user_parts[0]}</a><br />";
-	}
+	echo "<div class=\"thewire_icon\">";
+	echo elgg_view("profile/icon", array('entity' => get_post_owner($post->owner_guid), 'size' => 'small'));
+	echo "</div>";	
+	echo "<a href=\"{$CONFIG->wwwroot}pg/profile/{$user_parts[1]}\">{$user_parts[0]}</a><br />";
 	echo "<a href=\"{$CONFIG->wwwroot}/pg/blog/admin/read/{$post->guid}\">{$post->title}</a><br />{$description}";
 	?>
 	</div>
@@ -55,7 +53,7 @@ foreach ($posts as $username_and_icon => $post) {
 
 			    <div class="thewire_icon">
 			    <?php
-				        echo elgg_view("profile/icon", array('entity' => $vars['entity']->getOwnerEntity(), 'size' => 'small'));
+				        echo elgg_view("profile/icon", array('entity' => get_post_owner($post->owner_guid), 'size' => 'small'));
 			    ?>
 			    </div>
 
