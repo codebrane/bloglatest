@@ -34,8 +34,8 @@ function get_posts($username, $tags, $no_of_posts = MAX_LATEST_LIMIT, $post_type
 	}
 	
 	if ($post_type == POST_TYPE_ALL) {
-		$blogs = get_objects(POST_TYPE_BLOG);
-		$wires = get_objects(POST_TYPE_WIRE);
+		$blogs = get_objects(POST_TYPE_BLOG, $no_of_posts);
+		$wires = get_objects(POST_TYPE_WIRE, $no_of_posts);
 
 		$noBlogs = false;
 		if ((count($blogs) == 1) && ($blogs[0]->description == "")) $noBlogs = true;
@@ -52,10 +52,10 @@ function get_posts($username, $tags, $no_of_posts = MAX_LATEST_LIMIT, $post_type
 		}
 	}
 	if ($post_type == POST_TYPE_BLOG) {
-		$posts = get_objects(POST_TYPE_BLOG);
+		$posts = get_objects(POST_TYPE_BLOG, $no_of_posts);
 	}
 	if ($post_type == POST_TYPE_WIRE) {
-		$posts = get_objects(POST_TYPE_WIRE);
+		$posts = get_objects(POST_TYPE_WIRE, $no_of_posts);
 	}
 	
 	return filter_posts($posts, $username, $tags);
@@ -66,7 +66,7 @@ function get_posts($username, $tags, $no_of_posts = MAX_LATEST_LIMIT, $post_type
  * @param object_type POST_TYPE_BLOG or POST_TYPE_WIRE
  * @return An array of post objects
  */
-function get_objects($object_type) {
+function get_objects($object_type, $no_of_posts) {
 	if ($object_type == POST_TYPE_BLOG) {
 		$options = array('offset' => 0,
 										 'limit' => $no_of_posts,
