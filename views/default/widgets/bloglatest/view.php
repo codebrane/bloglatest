@@ -19,7 +19,7 @@
 </div>
 
 <?php
-$posts = get_posts($vars['entity']->username, $vars['entity']->tags, $vars['entity']->no_of_posts, $vars['entity']->posttype);
+$posts = get_posts($_SESSION['user'], $vars['entity']->username, $vars['entity']->tags, $vars['entity']->no_of_posts, $vars['entity']->posttype, $vars['entity']->restricttofriends);
 
 foreach ($posts as $username_and_icon => $post) {
 	$user_parts = explode(",", $username_and_icon);
