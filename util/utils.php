@@ -18,17 +18,21 @@ define(POST_TYPE_ALL, "POST_TYPE_ALL");
 define(POST_TYPE_BLOG, "POST_TYPE_BLOG");
 define(POST_TYPE_WIRE, "POST_TYPE_WIRE");
 
+define(RESTRICT_TO_FRIENDS, "RESTRICT_TO_FRIENDS");
+
 /**
  * Gets all the latest posts of all the supported subtypes
+ * @param current_user The current user object who is using the plugin
  * @param username The username to filter on. If this is empty, it means get posts for all users
  * @param tags The tags to filter on. If this is empty, no tag filter will occur
  * @param no_of_posts The limit on how many posts to grab, independent of filtering
  * @param post_type One of the defined POST_TYPE_*
+ * @param restrict_to_friends If this is set to RESTRICT_TO_FRIENDS only friends wire/posts will be shown
  * @return Returns an array of the form:
  *         USER_FULL_NAME,USER_LOGIN_ID,SMALL_ICON_URL,COUNT => post object
  *         the COUNT value can be ignored
  */
-function get_posts($username, $tags, $no_of_posts = MAX_LATEST_LIMIT, $post_type = POST_TYPE_ALL) {
+function get_posts($current_user, $username, $tags, $no_of_posts = MAX_LATEST_LIMIT, $post_type = POST_TYPE_ALL, $restrict_to_friends) {
 	if ($post_type == "") {
 		$post_type = POST_TYPE_ALL;
 	}
@@ -58,7 +62,7 @@ function get_posts($username, $tags, $no_of_posts = MAX_LATEST_LIMIT, $post_type
 		$posts = get_objects(POST_TYPE_WIRE, $no_of_posts);
 	}
 	
-	return filter_posts($posts, $username, $tags);
+	return filter_posts($current_user, $posts, $username, $tags, $restrict_to_friends);
 }
 
 /**
@@ -84,12 +88,14 @@ function get_objects($object_type, $no_of_posts) {
 }
 
 /**
- * Filters posts on either username, tags, or both
+ * Filters posts on either username, tags, friends or all three
+ * @param current_user The current user object who is using the plugin
  * @param posts The posts to filter
  * @param username The login ID of the user to filter on, or empty if no user filtering required
  * @param tags The tags to filter on, or empty if no tag filtering required
+ * @param restrict_to_friends If this is set to RESTRICT_TO_FRIENDS only friends wire/posts will be shown
  */
-function filter_posts($posts, $username, $tags) {
+function filter_posts($current_user, $posts, $username, $tags, $restrict_to_friends) {
 	$count = 0;
 	if ($tags != "") {
 		if (stristr($tags, ",") === FALSE) $tags .= ",";
@@ -137,6 +143,11 @@ function filter_posts($posts, $username, $tags) {
 		}
 		else if ($post->subtype == $subtype_wire) {
 			$the_blog->post_type = POST_TYPE_WIRE;
+		}
+		
+		// Check if only friends
+		if ($restrict_to_friends == RESTRICT_TO_FRIENDS) {
+			$ok_to_add = is_friend($current_user, $user);
 		}
 		
 		if ($ok_to_add) {
@@ -211,5 +222,23 @@ function get_subtype($post_type) {
 	}
 	
 	return $result->id;
+}
+
+/**
+ * Determines whether other_user is a friend of current_user
+ * @param current_user The current user object who is using the plugin
+ * @param other_user The user who might be a friend of current_user
+ * @return true if other_user is a friend of current_user otherwise false
+ */
+function is_friend($current_user, $other_user) {
+	$friends = $current_user->getFriends("", 100, $offset = 0);
+	
+	if (is_array($friends) && sizeof($friends) > 0) {
+		foreach($friends as $friend) {
+			if ($friend->guid == $other_user->guid) return true;
+		}
+	}
+	
+	return false;
 }
 ?>
