@@ -21,6 +21,7 @@ $english = array(
 	"bloglatest:view:edit:posttype:all:text" => "Blog and Wire posts",
 	"bloglatest:view:edit:posttype:blog:text" => "Blog posts",
 	"bloglatest:view:edit:posttype:wire:text" => "Wire posts",
+	"bloglatest:view:edit:restricttofriends" => "Restrict to friends",
 	"bloglatest:view:edit:username:text" => "Username",
 	"bloglatest:view:edit:tags:text" => "Tags",
 	"bloglatest:view:edit:noofposts:text" => "No. of posts",
