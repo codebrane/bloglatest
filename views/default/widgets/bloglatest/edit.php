@@ -27,6 +27,18 @@ echo elgg_echo('bloglatest:view:edit:posttype:text').":";
 </p>
 
 <p>
+	<?php
+	/*
+	 * Restrict to friends
+	 * http://trac.elgg.org/ticket/397
+	 */
+	echo elgg_echo('bloglatest:view:edit:restricttofriends').":"
+	?>
+	<input type="hidden" name="params[restricttofriends]" value="0" />
+	<input type="checkbox" name="params[restricttofriends]"  value="<?php echo RESTRICT_TO_FRIENDS; ?>" <?php if ($vars['entity']->restricttofriends) echo "checked=\"checked\""; ?> />
+</p>
+
+<p>
 <?php
 /*
  * Filter on username
